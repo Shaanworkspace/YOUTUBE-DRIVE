@@ -1,6 +1,5 @@
 # LeetCode 1291 - Sequential Digits
 
-
 ## Java
 
 ```java
