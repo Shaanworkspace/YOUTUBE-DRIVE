@@ -2,12 +2,10 @@
 
 **Problem Link:** https://leetcode.com/problems/maximum-alternating-sum-of-squares/
 
-**Approach:** Square and Sort Greedy
-Square every element (sign disappears), sort ascending, subtract the smallest
-n / 2 squares, add the remaining squares. Largest squares land on even
-(positive) indices, smallest on odd (negative) indices.
+**Companies:** Philips
 
-Time: O(n log n) | Space: O(n)
+**Approach:** Square and Sort Greedy — square every element, sort ascending, subtract the smallest n/2 squares, add the rest.
+**Time:** O(n log n) | **Space:** O(n)
 
 ---
 
@@ -52,13 +50,28 @@ class Solution {
 ## Python
 
 ```python
-from typing import List
-
 class Solution:
-    def maxAlternatingSum(self, nums: List[int]) -> int:
-        squares = sorted(x * x for x in nums)
+    def maxAlternatingSum(self, nums: list[int]) -> int:
         n = len(nums)
-        return sum(squares[n // 2:]) - sum(squares[:n // 2])
+
+        # Step 1: Calculate the square of each number
+        squares = [x * x for x in nums]
+
+        # Step 2: Sort squares in ascending order
+        squares.sort()
+
+        score = 0
+
+        # Step 3: Subtract the smallest n//2 squares
+        for i in range(n // 2):
+            score -= squares[i]
+
+        # Step 4: Add the remaining squares
+        for i in range(n // 2, n):
+            score += squares[i]
+
+        # Step 5: Return the maximum score
+        return score
 ```
 
 ---
@@ -75,17 +88,28 @@ public:
     long long maxAlternatingSum(vector<int>& nums) {
         int n = nums.size();
         vector<long long> squares(n);
+
+        // Step 1: Calculate the square of each number
         for (int i = 0; i < n; i++) {
-            squares[i] = 1LL * nums[i] * nums[i];
+            squares[i] = (long long)nums[i] * nums[i];
         }
+
+        // Step 2: Sort squares in ascending order
         sort(squares.begin(), squares.end());
+
         long long score = 0;
+
+        // Step 3: Subtract the smallest n/2 squares
         for (int i = 0; i < n / 2; i++) {
             score -= squares[i];
         }
+
+        // Step 4: Add the remaining squares
         for (int i = n / 2; i < n; i++) {
             score += squares[i];
         }
+
+        // Step 5: Return the maximum score
         return score;
     }
 };
@@ -101,25 +125,36 @@ public:
 static int cmpLongLong(const void* a, const void* b) {
     long long x = *(const long long*)a;
     long long y = *(const long long*)b;
-    if (x < y) return -1;
-    if (x > y) return 1;
-    return 0;
+    return (x > y) - (x < y);
 }
 
 long long maxAlternatingSum(int* nums, int numsSize) {
-    long long* squares = (long long*)malloc(numsSize * sizeof(long long));
-    for (int i = 0; i < numsSize; i++) {
+    int n = numsSize;
+    long long* squares = (long long*)malloc(sizeof(long long) * n);
+
+    // Step 1: Calculate the square of each number
+    for (int i = 0; i < n; i++) {
         squares[i] = (long long)nums[i] * nums[i];
     }
-    qsort(squares, numsSize, sizeof(long long), cmpLongLong);
+
+    // Step 2: Sort squares in ascending order
+    qsort(squares, n, sizeof(long long), cmpLongLong);
+
     long long score = 0;
-    for (int i = 0; i < numsSize / 2; i++) {
+
+    // Step 3: Subtract the smallest n/2 squares
+    for (int i = 0; i < n / 2; i++) {
         score -= squares[i];
     }
-    for (int i = numsSize / 2; i < numsSize; i++) {
+
+    // Step 4: Add the remaining squares
+    for (int i = n / 2; i < n; i++) {
         score += squares[i];
     }
+
     free(squares);
+
+    // Step 5: Return the maximum score
     return score;
 }
 ```
